@@ -43,7 +43,8 @@ def reply_to_music(r, submissions_replied_to):
                 submissions_replied_to.append(submission.id)
 
                 with open ("submissions_replied_to.txt", "a") as f:
-                    f.write(submission.id + "\n")
+                    f.write(submission.id)
+                    f.write("\n")
 
             else:
                 submission.reply("Hi! I'm a bot to go and fetch the lyrics to this wonderful song; polite, aren't I?\n\n" +
@@ -56,7 +57,11 @@ def reply_to_music(r, submissions_replied_to):
                 submissions_replied_to.append(submission.id)
 
                 with open ("submissions_replied_to.txt", "a") as f:
-                    f.write(submission.id + "\n")
+                    f.write(submission.id)
+                    f.write("\n")
+
+        else:
+            print("No valid submissions found...")
 
     print("Sleeping for 10 minutes...")
     time.sleep(600)
