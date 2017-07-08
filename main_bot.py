@@ -14,15 +14,17 @@ HEADERS = {
     "Connection": "keep-alive"
 }
 
+
 def bot_login():
     r = praw.Reddit(username = config.username,
-            password = config.password,
-            client_id = config.client_id,
-            client_secret = config.client_secret,
-            user_agent = "LyricFinderBot v0.1")
+                    password = config.password,
+                    client_id = config.client_id,
+                    client_secret = config.client_secret,
+                    user_agent = "LyricFinderBot v0.1")
 
     print("Logged in...")
     return r
+
 
 def reply_to_music(r, submissions_replied_to):
     title = ""
@@ -66,6 +68,7 @@ def reply_to_music(r, submissions_replied_to):
     print("Sleeping for 10 minutes...")
     time.sleep(600)
 
+
 def get_saved_submissions():
     if not os.path.isfile("submissions_replied_to.txt"):
         submissions_replied_to = []
@@ -77,6 +80,7 @@ def get_saved_submissions():
             submissions_replied_to = list(filter(None, submissions_replied_to))
 
     return submissions_replied_to
+
 
 def search_lyrics(title):
     query = title
