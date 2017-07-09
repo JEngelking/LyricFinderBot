@@ -14,6 +14,7 @@ HEADERS = {
     "Connection": "keep-alive"
 }
 
+
 def bot_login():
     r = praw.Reddit(username = config.username,
             password = config.password,
@@ -23,6 +24,7 @@ def bot_login():
 
     print("Logged in...")
     return r
+
 
 def reply_to_music(r, submissions_replied_to):
     title = ""
@@ -78,6 +80,7 @@ def get_saved_submissions():
 
     return submissions_replied_to
 
+
 def search_lyrics(title):
     query = title
 
@@ -104,6 +107,7 @@ def search_lyrics(title):
 
     else:
         return "Sorry, I wasn't able to find the lyrics for that song :("
+
 
 r = bot_login()
 submissions_replied_to = get_saved_submissions()
