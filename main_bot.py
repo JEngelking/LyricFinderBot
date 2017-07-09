@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import requests
 import os
 import time
+import re
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:30.0) " +
@@ -37,6 +38,11 @@ def reply_to_music(r, submissions_replied_to):
             print("Valid submission found!")
             title = submission.title
 
+            # optimizing title for searching by replacing characters and ignoring phrases
+            # in brackets or parentheses
+            title = title.replace(" ", "+")
+            title = re.sub('\(.*?\)', '', title)
+            print("Submission "+title+" being processed...")
             lyrics_to_comment = search_lyrics(title)
 
             if lyrics_to_comment == "Sorry, I wasn't able to find the lyrics for that song :(":
@@ -49,7 +55,7 @@ def reply_to_music(r, submissions_replied_to):
                     f.write("\n")
 
             else:
-                submission.reply("Hi! I'm a bot to go and fetch the lyrics to this wonderful song; polite, aren't I?\n\n" +
+                submission.reply("Hi! I'm a bot that went to fetch the lyrics to this wonderful song; polite, aren't I?\n\n" +
                                  "Here are the lyrics to " + title + ":\n\n" +
                                  lyrics_to_comment
                                 )
@@ -85,7 +91,6 @@ def get_saved_submissions():
 def search_lyrics(title):
     query = title
 
-    query = query.replace(" ", "+")
     search_url = 'http://search.azlyrics.com/search.php?q='
     comp_url = search_url + query
     results = requests.get(comp_url)
@@ -113,6 +118,4 @@ def search_lyrics(title):
 r = bot_login()
 submissions_replied_to = get_saved_submissions()
 print(submissions_replied_to)
-
-while True:
-    reply_to_music(r, submissions_replied_to)
+reply_to_music(r, submissions_replied_to)

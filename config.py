@@ -1,7 +1,4 @@
-#dummy information used here for privacy purposes: if code is used, personal information for their app on Reddit + login information
-#should be put in this file instead.
-
-username = "myUsername"
-password = "myPassword"
-client_id = "myClientID"
-client_secret = "mySecret"
+username = "LyricFinderBot"
+password = "d4a65315"
+client_id = "Ai24UETtTlJ9OQ"
+client_secret = "fMWJSbcrj5sVHgA8W7J4cDbLXHU"
