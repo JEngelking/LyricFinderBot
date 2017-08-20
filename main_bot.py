@@ -29,7 +29,7 @@ def bot_login():
 
 def reply_to_music(r, submissions_replied_to):
     title = ""
-    submissions = r.subreddit('test').hot(limit=10)
+    submissions = r.subreddit('test+metalcore').top('day')
 
     print("Obtaining submissions...")
 
@@ -40,23 +40,27 @@ def reply_to_music(r, submissions_replied_to):
 
             # optimizing title for searching by replacing characters and ignoring phrases
             # in brackets or parentheses
+            title_to_post = title
             title = title.replace(" ", "+")
             title = re.sub('\(.*?\)', '', title)
             print("Submission "+title+" being processed...")
             lyrics_to_comment = search_lyrics(title)
 
             if lyrics_to_comment == "Sorry, I wasn't able to find the lyrics for that song :(":
-                print("Apology printed ;(")
                 submission.reply(lyrics_to_comment + "\n\n" + "Please accept [this](http://i.imgur.com/f3B9WaZ.png) picture of a puppy as an apology.")
+                print("Apology printed ;(")
                 submissions_replied_to.append(submission.id)
 
                 with open ("submissions_replied_to.txt", "a") as f:
                     f.write(submission.id)
                     f.write("\n")
 
+                print("Sleeping for ten minutes until able to comment again...")
+                time.sleep(600)
+
             else:
                 submission.reply("Hi! I'm a bot that went to fetch the lyrics to this wonderful song; polite, aren't I?\n\n" +
-                                 "Here are the lyrics to " + title + ":\n\n" +
+                                 "Here are the lyrics to " + title_to_post + ":\n\n" +
                                  lyrics_to_comment
                                 )
 
@@ -68,11 +72,11 @@ def reply_to_music(r, submissions_replied_to):
                     f.write(submission.id)
                     f.write("\n")
 
+                print("Sleeping for ten minutes until able to comment again...")
+                time.sleep(600)
+
         else:
             print("No valid submissions found...")
-
-    print("Sleeping for 10 minutes...")
-    time.sleep(600)
 
 
 def get_saved_submissions():
@@ -97,10 +101,11 @@ def search_lyrics(title):
 
     search_soup = BeautifulSoup(results.text, "lxml")
 
-    if search_soup.find_all('td', {'class': 'text-left visitedlyr'}) == None:
-        for td in search_soup.find_all('td', {'class': 'text-left visitedlyr'}):
-            link = td.find('a')
-            lyrics_url = link.get('href')
+    answer = search_soup.find('td', {'class': 'text-left visitedlyr'})
+
+    if answer:
+        link = answer.find('a')
+        lyrics_url = link.get('href')
 
         lyrics_results = requests.get(lyrics_url, headers=HEADERS)
 
