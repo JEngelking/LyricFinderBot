@@ -23,7 +23,7 @@ def bot_login():
                     password=config.password,
                     client_id=config.client_id,
                     client_secret=config.client_secret,
-                    user_agent="LyricFinderBot v0.1")
+                    user_agent="LyricFinderBot v0.2")
 
     print("Logged in...")
     return r
@@ -55,22 +55,24 @@ def reply_to_music(r, submissions_replied_to):
     #check each retrieved submission for validity
 
     for submission in submissions:
-        if "you" in submission.url and submission.id not in submissions_replied_to:
+        if "you" in submission.url:
             print("Valid submission found!")
             title=submission.title
 
             # optimizing title for searching by replacing characters and ignoring phrases
-            # in brackets or parentheses
+            # in brackets or parentheses, as well as removing excess whitespace for
+            #comment-friendly title
+            title = re.sub('([\(\[]).*?([\)\]])', '', title)
+            title = title.strip()
             title_to_post = title
             title = title.replace(" ", "+")
-            title = re.sub('\(.*?\)', '', title)
             print("Submission "+title+" being processed...")
             lyrics_to_comment = search_lyrics(title)
 
             #in the case that lyrics are not found, find a puppy to help console any comment readers, and print an apology
             if lyrics_to_comment == "Sorry, I wasn't able to find the lyrics for that song :(":
                 puppy_to_post = get_puppies()
-                submission.reply(lyrics_to_comment + "\n\n" + "Please accept [this]"+puppy_to_post+" picture of a puppy as an apology.")
+                submission.reply(lyrics_to_comment + "\n\n" + "Please accept [this]("+puppy_to_post+") picture of a puppy as an apology.")
                 print("Apology printed ;(")
                 submissions_replied_to.append(submission.id)
 
