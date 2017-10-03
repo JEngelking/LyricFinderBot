@@ -32,7 +32,7 @@ def bot_login():
 #to maximize puppy randomness in thorough apology commentations. The function returns the url for commenting.
 
 
-def get_puppies():
+def get_puppies(r):
     puppies = r.subreddit('puppies').new(limit=1)
 
     for pup in puppies:
@@ -48,14 +48,14 @@ def get_puppies():
 def reply_to_music(r, submissions_replied_to):
     title = ""
     #get submissions from specified subreddits
-    submissions = r.subreddit('test').hot(limit=5)
+    submissions = r.subreddit('Music+PostHardcore+Metal+Metalcore+progmetal+Hardcore+melodichardcore+postmetal+progrockmusic').new(limit=10)
 
     print("Obtaining submissions...")
 
     #check each retrieved submission for validity
 
     for submission in submissions:
-        if "you" in submission.url:
+        if "you" in submission.url and submission.id not in submissions_replied_to:
             print("Valid submission found!")
             title=submission.title
 
@@ -71,7 +71,7 @@ def reply_to_music(r, submissions_replied_to):
 
             #in the case that lyrics are not found, find a puppy to help console any comment readers, and print an apology
             if lyrics_to_comment == "Sorry, I wasn't able to find the lyrics for that song :(":
-                puppy_to_post = get_puppies()
+                puppy_to_post = get_puppies(r)
                 submission.reply(lyrics_to_comment + "\n\n" + "Please accept [this]("+puppy_to_post+") picture of a puppy as an apology.")
                 print("Apology printed ;(")
                 submissions_replied_to.append(submission.id)
@@ -82,8 +82,8 @@ def reply_to_music(r, submissions_replied_to):
                     f.write(submission.id)
                     f.write("\n")
 
-                print("Sleeping for ten minutes until able to comment again...")
-                time.sleep(600)
+                print("Sleeping for one minute until able to comment again...")
+                time.sleep(60)
 
             #as long as lyrics were found, respond with said lyrics and acknowledge politeness
             else:
@@ -101,8 +101,8 @@ def reply_to_music(r, submissions_replied_to):
                     f.write(submission.id)
                     f.write("\n")
 
-                print("Sleeping for ten minutes until able to comment again...")
-                time.sleep(600)
+                print("Sleeping for one minute until able to comment again...")
+                time.sleep(60)
 
         else:
             print("No valid submissions found...")
@@ -149,6 +149,7 @@ def search_lyrics(title):
 
         lyric_soup = BeautifulSoup(lyrics_results.text, "lxml")
 
+        lyrics_content = ""
         #get div containing lyrics and copy lyrics to variable
         for div in lyric_soup.find_all('div', {'class': 'col-xs-12 col-lg-8 text-center'}):
             lyrics_content = div.find('div' , {'class': None}).text
@@ -161,6 +162,11 @@ def search_lyrics(title):
 
 #main process in LyricFinderBot
 r = bot_login()
-submissions_replied_to = get_saved_submissions()
-print(submissions_replied_to)
-reply_to_music(r, submissions_replied_to)
+
+def __main__():
+    submissions_replied_to = get_saved_submissions()
+    reply_to_music(r, submissions_replied_to)
+
+#Leeeeeet's bump it
+while (1):
+    __main__()
