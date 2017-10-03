@@ -48,14 +48,13 @@ def get_puppies(r):
 def reply_to_music(r, submissions_replied_to):
     title = ""
     #get submissions from specified subreddits
-    submissions = r.subreddit('PostHardcore+Metal+Metalcore+progmetal+Hardcore+melodichardcore+postmetal+progrockmusic').new(limit=10)
-
+    submissions = r.subreddit('PostHardcore+Metal+Metalcore+progmetal+Hardcore+melodichardcore+postmetal+progrockmusic+test').new(limit=10)
     print("Obtaining submissions...")
 
     #check each retrieved submission for validity
 
     for submission in submissions:
-        if "you" in submission.url and submission.id not in submissions_replied_to:
+        if "you" in submission.url:
             print("Valid submission found!")
             title=submission.title
 
@@ -82,8 +81,8 @@ def reply_to_music(r, submissions_replied_to):
                     f.write(submission.id)
                     f.write("\n")
 
-                print("Sleeping for one minute until able to comment again...")
-                time.sleep(300)
+                print("Sleeping for ten minutes until able to comment again...")
+                time.sleep(600)
 
             #as long as lyrics were found, respond with said lyrics and acknowledge politeness
             else:
@@ -101,8 +100,8 @@ def reply_to_music(r, submissions_replied_to):
                     f.write(submission.id)
                     f.write("\n")
 
-                print("Sleeping for one minute until able to comment again...")
-                time.sleep(300)
+                print("Sleeping for ten minutes until able to comment again...")
+                time.sleep(600)
 
         else:
             print("No valid submissions found...")
@@ -152,7 +151,7 @@ def search_lyrics(title):
         lyrics_content = ""
         #get div containing lyrics and copy lyrics to variable
         for div in lyric_soup.find_all('div', {'class': 'col-xs-12 col-lg-8 text-center'}):
-            lyrics_content = div.find('div' , {'class': None}).text
+            lyrics_content = div.find('div' , {'class': None}).get_text(separator='\n')
 
         return lyrics_content
 
