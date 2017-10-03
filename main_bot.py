@@ -48,7 +48,7 @@ def get_puppies(r):
 def reply_to_music(r, submissions_replied_to):
     title = ""
     #get submissions from specified subreddits
-    submissions = r.subreddit('PostHardcore+Metal+Metalcore+progmetal+Hardcore+melodichardcore+postmetal+progrockmusic+test').new(limit=10)
+    submissions = r.subreddit('PostHardcore+Metalcore+progmetal+Hardcore+melodichardcore+postmetal+progrockmusic+test').new(limit=10)
     print("Obtaining submissions...")
 
     #check each retrieved submission for validity
