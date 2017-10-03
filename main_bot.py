@@ -48,7 +48,7 @@ def get_puppies(r):
 def reply_to_music(r, submissions_replied_to):
     title = ""
     #get submissions from specified subreddits
-    submissions = r.subreddit('Music+PostHardcore+Metal+Metalcore+progmetal+Hardcore+melodichardcore+postmetal+progrockmusic').new(limit=10)
+    submissions = r.subreddit('PostHardcore+Metal+Metalcore+progmetal+Hardcore+melodichardcore+postmetal+progrockmusic').new(limit=10)
 
     print("Obtaining submissions...")
 
@@ -83,7 +83,7 @@ def reply_to_music(r, submissions_replied_to):
                     f.write("\n")
 
                 print("Sleeping for one minute until able to comment again...")
-                time.sleep(60)
+                time.sleep(300)
 
             #as long as lyrics were found, respond with said lyrics and acknowledge politeness
             else:
@@ -102,7 +102,7 @@ def reply_to_music(r, submissions_replied_to):
                     f.write("\n")
 
                 print("Sleeping for one minute until able to comment again...")
-                time.sleep(60)
+                time.sleep(300)
 
         else:
             print("No valid submissions found...")
